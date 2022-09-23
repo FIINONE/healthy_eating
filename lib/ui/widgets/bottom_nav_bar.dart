@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:healthy_eating/config/app_colors.dart';
 import 'package:healthy_eating/ui/pages/day/day_page.dart';
 import 'package:healthy_eating/ui/pages/week_page.dart';
 
@@ -33,6 +34,8 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: onTap,
+        selectedItemColor: AppColors.greenDark,
+        unselectedItemColor: AppColors.greenLight,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.view_week), label: ''),

@@ -1,28 +1,31 @@
 class DishModel {
   final String title;
   final String photo;
+  final String uuid;
   final String description;
-  final String recipe;
+  final String calories;
 
   const DishModel({
     required this.title,
     this.photo = '',
+    required this.uuid,
     this.description = '',
-    this.recipe = '',
+    this.calories = '',
   });
 
   DishModel copyWith({
-    String? uuid,
     String? title,
     String? photo,
+    String? uuid,
     String? description,
-    String? recipe,
+    String? calories,
   }) {
     return DishModel(
       title: title ?? this.title,
       photo: photo ?? this.photo,
+      uuid: uuid ?? this.uuid,
       description: description ?? this.description,
-      recipe: recipe ?? this.recipe,
+      calories: calories ?? this.calories,
     );
   }
 
@@ -30,8 +33,9 @@ class DishModel {
     return {
       'title': title,
       'photo': photo,
+      'uuid': uuid,
       'description': description,
-      'recipe': recipe,
+      'calories': calories,
     };
   }
 
@@ -39,9 +43,9 @@ class DishModel {
     return DishModel(
       title: map['title'],
       photo: map['photo'],
+      uuid: map['uuid'],
       description: map['description'],
-      recipe: map['recipe'],
+      calories: map['calories'],
     );
   }
-
 }

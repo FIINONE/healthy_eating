@@ -26,7 +26,27 @@ class DayDietBloc extends Cubit<DayDietBlocState> {
   Future<void> setData(DishModel model) async {
     emit(DayDietBlocLoading());
 
-    dishList.add(model);
+    final index = dishList.indexWhere((element) => element.uuid == model.uuid);
+
+    if (index.isNegative) {
+      dishList.add(model);
+    } else {
+      dishList[index] = model;
+    }
+
+    final dayModel = DayDietModel(day: currentDay, dishList: dishList);
+
+    final map = dayModel.toMap();
+
+    await provider.setTOLocalStorage(currentDay.name, map);
+
+    emit(DayDietBlocData(data: dayModel));
+  }
+
+  Future<void> deleteData(DishModel model) async {
+    emit(DayDietBlocLoading());
+
+    dishList.remove(model);
 
     final dayModel = DayDietModel(day: currentDay, dishList: dishList);
 
@@ -53,6 +73,12 @@ class DayDietBloc extends Cubit<DayDietBlocState> {
       return;
     }
     currentDay = Days.values[index + 1];
+    getData();
+  }
+
+  void selectDay(Days day) {
+    currentDay = day;
+
     getData();
   }
 

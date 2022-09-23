@@ -26,41 +26,46 @@ class _DayPageState extends State<DayPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => DishCubit()),
-      ],
-      child: BlocBuilder<DayDietBloc, DayDietBlocState>(
-        builder: (context, state) {
-          return state.map(
-              loading: (loading) => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-              data: (data) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      const TopPanel(),
-                      DishList(dishList: data.data.dishList),
-                      AddButton(
-                        buttonText: 'Добавить новое блюдо',
-                        onPressed: () {
-                          final dishCubit = context.read<DishCubit>();
-                          showDialog(
-                            context: context,
-                            useRootNavigator: false,
-                            builder: (context) {
-                              return DishAddDialog(dishCubit: dishCubit);
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              });
-        },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Здоровое питание'),
+      ),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => DishCubit()),
+        ],
+        child: BlocBuilder<DayDietBloc, DayDietBlocState>(
+          builder: (context, dayState) {
+            return dayState.map(
+                loading: (loading) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                data: (data) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16),
+                    child: Column(
+                      children: [
+                        const TopPanel(),
+                        DishList(dishList: data.data.dishList),
+                        AddButton(
+                          buttonText: 'Добавить новое блюдо',
+                          onPressed: () {
+                            final dishCubit = context.read<DishCubit>();
+                            showDialog(
+                              context: context,
+                              useRootNavigator: false,
+                              builder: (context) {
+                                return BlocProvider.value(value: dishCubit, child: const DishAddDialog());
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                });
+          },
+        ),
       ),
     );
   }
